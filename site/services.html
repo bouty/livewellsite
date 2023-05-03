@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Integrative life coaching">
+    <title>Coach Profile - Live Well Life Coaching</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        *.content {margin-top: 3em;}
+        *.highlight {font-weight: bold;}
+        *.success {color: #5964ff;}
+        *.failure {color: #ff0000;}
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href="index.html">Live Well</a>
+
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="index.html" class="pure-menu-link">Home</a></li>
+            <li class="pure-menu-item pure-menu-selected"><a href="services.html" class="pure-menu-link">Services</a></li>
+            <li class="pure-menu-item"><a href="profile.html" class="pure-menu-link">Coach Profile</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="content">
+    <div class="pure-g">
+        <div class="l-box pure-u-1 pure-u-md-2-5 pure-u-lg-2-5">
+            <p>
+                I'm glad you decided to reach out, this is a great step toward balance. Leave
+                me a short message and we can work out how best to continue.
+            </p>
+            <form id="messageForm" class="pure-form pure-form-stacked">
+                <fieldset>
+                    <label>Name</label>
+                    <input id="clientName"class="pure-input-1" type="text"/>
+                    <label>Email</label>
+                    <input id="clientEmail"class="pure-input-1" type="text"/>
+                    <label>Message</label>
+                    <textarea id="message"class="pure-input-1" rows="4"></textarea>
+                </fieldset>
+                <p>
+                    <a id="sendMessage" href="#" class="pure-button">Request Intro</a>
+                </p>
+            </form>
+            <p>
+                <span id="messageResult" class="highlight"></span>
+            </p>
+        </div>
+        <main class="l-box pure-u-1 pure-u-md-2-5 pure-u-lg-2-5">
+            <h2>Services</h2>
+            <p>
+                I start with a 20-minute introduction at no charge to you. This gives us a chance to determine
+                if working together will be a good fit and which type of plan to start with.
+            </p>
+            <ul>
+                <li>
+                    <span class="highlight">Single Session</span> - Great for someone new to coaching or those that like to do their
+                    own research but still have someone to discuss ideas with. This option also works well to augment the other
+                    plans with additional meeting times.
+                </li>
+                <li>
+                    <span class="highlight">Breakthrough Sessions</span> - Used to target clearly defined goals and outcomes. This format
+                    typically consists of a client intake session and 3-5 additional sessions over an expedited time frame.
+                </li>
+                <li>
+                    <span class="highlight">Monthly Plan</span> - Consists of weekly sessions and additional check-in points.
+                </li>
+                <li>
+                    <span class="highlight">Annual Plan</span> - My personal favorite, by committing to long term work together
+                    we can make lasting change at a reasonable pace. This option follows the monthly plan with a longer-term
+                    commitment and quarterly special focus sessions.
+                </li>
+                <li>
+                    <span class="highlight">Organizational Sessions</span> - By working with leaders and employees I help
+                    bridge the gap supporting the individuals and by offering outside perspectives.
+                </li>
+            </ul>
+        </main>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    var messageSender = (function(){
+        initialize = function(options){
+            $('#sendMessage').click(function(){
+                submitForm();
+            });
+        },
+        submitForm = function(){
+            $('#messageForm').hide();
+
+            $.ajax({
+                url: "https://prod-29.centralus.logic.azure.com:443/workflows/b8c444abc0ec46bb9b894353fa9bff2e/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=9-3fVDdokdWHKel7LK6iik8qpI8bVdfnv2qeSsjzc9M",
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(getMessageData()),
+                success: function(){
+                    $('#messageResult').text("Message sent. Thanks, I'll get back to you soon.").addClass('success');
+                },
+                error: function(){
+                    $('#messageResult').text("Sorry, something didn't work, you can try a direct email to mike@live-well.coach").addClass('failure');
+                }
+            });
+        },
+        getMessageData = function(){
+            return {
+                "name": $('#clientName').val(),
+                "email": $('#clientEmail').val(),
+                "message": $('#message').val()
+            };
+        };
+
+        return {
+            init: initialize
+        }
+    })();
+
+    $(document).ready(function(){
+        messageSender.init();
+    });
+</script>
+</body>
+</html>

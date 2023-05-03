@@ -1,20 +1,19 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+This is the project to track ideas and updates related to my coaching business.
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+This is pretty much just for me to track my changes and have a redundant repo and a build process.
+I plan to use:
+- HTML, CSS and likely Vue (non-compiled)
+- An azure function to send the emails of the site
 
 # Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+I'll be building the code and deploying it to Azure Static Web Sites
 
 # Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+At this time no plans for anyone else to contribute
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+# TODO
+- merge the changes to main
+- use Azure dev ops to deploy to Azure
+- join chamber
