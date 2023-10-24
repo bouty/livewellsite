@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Integrative life coaching">
+    <title>Coach Profile - Live Well Life Coaching</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        *.content {margin-top: 3em;}
+        *.highlight {font-weight: bold;}
+        *.success {color: #5964ff;}
+        *.failure {color: #ff0000;}
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+        <a class="pure-menu-heading" href="index.html">Live Well</a>
+
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="index.html" class="pure-menu-link">Home</a></li>
+            <li class="pure-menu-item"><a href="services.html" class="pure-menu-link">Services</a></li>
+            <li class="pure-menu-item"><a href="profile.html" class="pure-menu-link">Coach Profile</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="content">
+    <div class="pure-g">
+        <div class="l-box pure-u-1 pure-u-md-1-5 pure-u-lg-1-5"></div>
+        <main class="l-box pure-u-1 pure-u-md-2-5 pure-u-lg-2-5">
+            <h2>Reading Group - Build the Life You Want</h2>
+            <p>
+                Thanks for your interest in reading with me.
+                Leave me your email address and I will email you once we have the books and are ready to get started.
+                If there is enough interest in the book we may do additional sessions. Please be sure that you can
+                commit to the meetings and schedule to ensure that we are able to generate good conversations each week.
+            </p>
+            <form id="messageForm" class="pure-form pure-form-stacked">
+                <fieldset>
+                    <label>Email</label>
+                    <input id="clientEmail"class="pure-input-1" type="text"/>
+                </fieldset>
+                <p>
+                    <a id="sendMessage" href="#" class="pure-button">Request a Spot</a>
+                </p>
+            </form>
+            <p>
+                <span id="messageResult" class="highlight"></span>
+            </p>
+        </main>
+        <div class="l-box pure-u-1 pure-u-md-1-5 pure-u-lg-1-5">
+            <img src="./img/life-you-want.png" />
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+    var messageSender = (function(){
+        initialize = function(options){
+            $('#sendMessage').click(function(){
+                submitForm();
+            });
+        },
+        submitForm = function(){
+            $('#messageForm').hide();
+
+            $.ajax({
+                url: "https://prod-29.centralus.logic.azure.com:443/workflows/b8c444abc0ec46bb9b894353fa9bff2e/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=9-3fVDdokdWHKel7LK6iik8qpI8bVdfnv2qeSsjzc9M",
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(getMessageData()),
+                success: function(){
+                    $('#messageResult').text("Message sent. Thanks, I'll get back to you soon.").addClass('success');
+                },
+                error: function(){
+                    $('#messageResult').text("Sorry, something didn't work, you can try a direct email to mike@live-well.coach").addClass('failure');
+                }
+            });
+        },
+        getMessageData = function(){
+            return {
+                "title": "Book Group",
+                "name": "Build the Life You Want",
+                "email": $('#clientEmail').val(),
+                "message": "ymca"
+            };
+        };
+
+        return {
+            init: initialize
+        }
+    })();
+
+    $(document).ready(function(){
+        messageSender.init();
+    });
+</script>
+</body>
+</html>
